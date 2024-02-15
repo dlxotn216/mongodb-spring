@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+#      host: localhost
+#      port: 27017
+#      database: demoApp
+#      username: taesu
+#      password: password
+#      authentication-database: admin
+      uri: mongodb://taesu:password@localhost:27017/demoApp?authSource=admin
+
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
