@@ -28,11 +28,11 @@ class AppConverters(converters: List<Converter<*, *>>) {
 }
 
 @MongodbReadingConverter
-class YearReadConverter: Converter<Int, Year> {
-    override fun convert(source: Int): Year = Year.of(source)
+class YearReadConverter: Converter<Long, Year> {
+    override fun convert(source: Long): Year = Year.of(source.toInt())
 }
 
 @MongodbWritingConverter
-class YearWriteConverter: Converter<Year, Int> {
-    override fun convert(source: Year): Int = source.value
+class YearWriteConverter: Converter<Year, Long> {
+    override fun convert(source: Year): Long = source.value.toLong()
 }
