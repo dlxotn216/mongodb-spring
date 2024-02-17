@@ -19,12 +19,15 @@ class Post(
     var title: String,
     var content: String,
     val comments: List<Comment> = listOf(),
+    val votes1: List<String> = listOf(),
+    val votes2: List<String> = listOf(),
 ) {
 }
 
 class Comment(
     val content: String,
     val author: String,
+    val likes: List<String> = listOf(),
 )
 
 interface PostRepository: MongoRepository<Post, ObjectId>

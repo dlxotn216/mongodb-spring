@@ -61,4 +61,15 @@ class BookUpdateService(
 
         mongoTemplate.updateFirst(query, update, "books")
     }
+
+    fun unset(id: String) {
+        val query = Query().apply {
+            addCriteria(Criteria.where("_id").`is`(ObjectId(id)))
+        }
+        val update = Update().apply {
+            unset("test.user")
+        }
+
+        mongoTemplate.updateFirst(query, update, "books")
+    }
 }

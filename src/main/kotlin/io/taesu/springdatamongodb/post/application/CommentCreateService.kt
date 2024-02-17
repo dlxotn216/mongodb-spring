@@ -43,6 +43,75 @@ class CommentCreateService(
         }
         mongoTemplate.updateFirst(query, update, "posts")
     }
+
+    fun addVotes(postId: String, users: List<String>) {
+        val query = Query().apply {
+            addCriteria(Criteria.where("_id").`is`(ObjectId(postId)))
+        }
+        val update = Update().apply {
+            addToSet("votes1", users) // "taesu,lee,taesu,kim"
+            addToSet("votes2", BasicDBObject("\$each", users)) // ["taesu", "lee", "kim"]
+        }
+        mongoTemplate.updateFirst(query, update, "posts")
+    }
+
+    /**
+     * { $pop: { votes1: -1 } }
+     * { $pull: { votes2: "taesu" } }
+     */
+    fun removeVotes(postId: String, user: String) {
+        val query = Query().apply {
+            addCriteria(Criteria.where("_id").`is`(ObjectId(postId)))
+        }
+        val update = Update().apply {
+            pop("votes1", Update.Position.LAST)      // 배열의 양쪽에서 제거
+            pull("votes2", user)                     // 배열에서 특정 값 "모두" 제거
+        }
+        mongoTemplate.updateFirst(query, update, "posts")
+    }
+
+    /**
+     * index로 특정 comment에 좋아요 투표 추가
+     */
+    fun addVotes(postId: String, commentIndex: Int, users: List<String>) {
+        val query = Query().apply {
+            addCriteria(Criteria.where("_id").`is`(ObjectId(postId)))
+        }
+        val update = Update().apply {
+            addToSet("comments.$commentIndex.likes", BasicDBObject("\$each", users))
+        }
+        mongoTemplate.updateFirst(query, update, "posts")
+    }
+
+    /**
+     * 배열 위치 연산자 $를 사용하여 코멘트 작성자 이름 변경
+     * 단, 일치하는 첫 번째만 변경 됨
+     */
+    fun updateFirstCommentAuthor(postId: String, author: String, newAuthor: String) {
+        val query = Query().apply {
+            addCriteria(Criteria.where("_id").`is`(ObjectId(postId)))
+            addCriteria(Criteria.where("comments.author").`is`(author))
+        }
+        val update = Update().apply {
+            set("comments.$.author", newAuthor)
+        }
+        mongoTemplate.updateFirst(query, update, "posts")
+    }
+
+    /**
+     * 필터 된 개별 요소를 갱신 함
+     */
+    fun updateAllCommentAuthor(postId: String, author: String, newAuthor: String) {
+        val query = Query().apply {
+            addCriteria(Criteria.where("_id").`is`(ObjectId(postId)))
+            addCriteria(Criteria.where("comments.author").`is`(author))
+        }
+        val update = Update().apply {
+            set("comments.$[elem].author", newAuthor)
+            filterArray(Criteria.where("elem.author").`is`(author)) // elem == comment object
+        }
+        mongoTemplate.updateFirst(query, update, "posts")
+    }
 }
 
 fun CommentCreateRequest.toDocument() = Comment(
