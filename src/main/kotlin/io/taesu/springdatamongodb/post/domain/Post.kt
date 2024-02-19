@@ -28,6 +28,7 @@ class Comment(
     val content: String,
     val author: String,
     val likes: List<String> = listOf(),
+    val likeCount: Int = likes.size
 )
 
 interface PostRepository: MongoRepository<Post, ObjectId>
