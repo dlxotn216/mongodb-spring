@@ -1,6 +1,9 @@
 package io.taesu.springdatamongodb.user.application
 
+import io.taesu.springdatamongodb.user.document.Name
+import io.taesu.springdatamongodb.user.document.Person
 import io.taesu.springdatamongodb.user.document.User
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -35,6 +38,14 @@ class UserRetrieveServiceTest {
                 User(name = "taesu", age = 20, joinedAt = LocalDateTime.of(2021, 1, 1, 0, 0, 0)),
                 User(name = "lee", age = 22, joinedAt = LocalDateTime.of(2022, 1, 1, 0, 0, 0)),
                 User(name = "kim", age = 52, address = null, joinedAt = LocalDateTime.of(2023, 1, 1, 0, 0, 0)),
+            )
+        )
+
+        mongoTemplate.dropCollection(Person::class.java)
+        mongoTemplate.insertAll(
+            listOf(
+                Person(name = Name(last = "tae", first = "su")),
+                Person(name = Name(last = "Lee", first = "Tae Su")),
             )
         )
     }
@@ -155,6 +166,26 @@ class UserRetrieveServiceTest {
         // then
         assertEquals(1, usersAddressIsNull.size)
         assertEquals("kim", usersAddressIsNull[0].name)
+    }
+
+    @Test
+    fun `name 객체로 찾기`() {
+        // given
+        // when
+        val people = userRetrieveService.retrieveNameAllMatched(Name(last = "Lee", first = "Tae Su"))
+
+        // then
+        assertThat(people.size).isEqualTo(1)
+    }
+
+    @Test
+    fun `name 값으로 찾기`() {
+        // given
+        // when
+        val people = userRetrieveService.retrieveNameMatched(Name(last = "Lee", first = "Tae Su"))
+
+        // then
+        assertThat(people.size).isEqualTo(1)
     }
 
 }

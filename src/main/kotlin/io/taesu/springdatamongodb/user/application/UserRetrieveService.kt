@@ -1,5 +1,7 @@
 package io.taesu.springdatamongodb.user.application
 
+import io.taesu.springdatamongodb.user.document.Name
+import io.taesu.springdatamongodb.user.document.Person
 import io.taesu.springdatamongodb.user.document.User
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
@@ -124,6 +126,28 @@ class UserRetrieveService(
                 Criteria.where("address").isNullValue
             ),
             User::class.java
+        )
+    }
+
+    fun retrieveNameAllMatched(name: Name): MutableList<Person> {
+        //  { "name" : { "last" : "Lee", "first" : "Tae Su"}}
+        // 정확히 일치해야 한다. 순서도 중요, 다른 필드도 없어야 한다.
+        return mongoTemplate.find(
+            query(
+                Criteria.where("name").`is`(name)
+            ),
+            Person::class.java
+        )
+    }
+
+    fun retrieveNameMatched(name: Name): MutableList<Person> {
+        //  { "name.first" : "Tae Su", "name.last" : "Lee"
+        return mongoTemplate.find(
+            query(
+                Criteria.where("name.first").`is`(name.first)
+                    .and("name.last").`is`(name.last)
+            ),
+            Person::class.java
         )
     }
 }
