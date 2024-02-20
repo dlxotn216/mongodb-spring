@@ -17,5 +17,16 @@ class User(
     val name: String,
     val age: Int,
     val address: String? = null,
-    val joinedAt: LocalDateTime = LocalDateTime.now()
+    val joinedAt: LocalDateTime = LocalDateTime.now(),
+)
+
+@Document("people")
+class Person(
+    val _id: ObjectId = ObjectId(),
+    val name: Name,
+)
+
+class Name(
+    val last: String,
+    val first: String,
 )
