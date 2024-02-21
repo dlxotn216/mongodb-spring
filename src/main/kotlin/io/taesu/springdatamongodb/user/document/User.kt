@@ -30,3 +30,12 @@ class Name(
     val last: String,
     val first: String,
 )
+
+@Document("large_users")
+class LargeUser(
+    val _id: String,
+    val name: String,
+    val age: Int,
+    val address: String? = null,
+    val joinedAt: LocalDateTime = LocalDateTime.now(),
+)
