@@ -39,3 +39,17 @@ class LargeUser(
     val address: String? = null,
     val joinedAt: LocalDateTime = LocalDateTime.now(),
 )
+
+@Document("locaion_users")
+class LocationUser(
+    val _id: ObjectId = ObjectId(),
+    val name: String,
+    val age: Int,
+    val location: Location,
+    val joinedAt: LocalDateTime = LocalDateTime.now(),
+)
+
+class Location(
+    val ip: String,
+    val city: String
+)
