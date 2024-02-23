@@ -1,13 +1,15 @@
 spring:
   data:
     mongodb:
+  config:
+    import: file:./config/datasource.yml
 #      host: localhost
 #      port: 27017
 #      database: demoApp
 #      username: taesu
 #      password: password
 #      authentication-database: admin
-      uri: mongodb://taesu:password@localhost:27017/demoApp?authSource=admin
+#      uri: mongodb://taesu:password@localhost:27017/demoApp?authSource=admin
 
 
 logging:

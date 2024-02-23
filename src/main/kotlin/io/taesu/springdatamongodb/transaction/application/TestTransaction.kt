@@ -17,16 +17,12 @@ import org.springframework.transaction.annotation.Transactional
 class TestTransaction(private val mongoTemplate: MongoTemplate) {
     @Transactional
     fun save() {
-        mongoTemplate.dropCollection("groups")
-        mongoTemplate.dropCollection("group_users")
         val user = mongoTemplate.insert(GroupUser(name = "lee"))
         mongoTemplate.insert(Group(name = "Dev", userIds = listOf(user._id)))
     }
 
     @Transactional
     fun throwException() {
-        mongoTemplate.dropCollection("groups")
-        mongoTemplate.dropCollection("group_users")
         val user = mongoTemplate.insert(GroupUser(name = "lee"))
         mongoTemplate.insert(Group(name = "Dev", userIds = listOf(user._id)))
 
