@@ -1,4 +1,4 @@
-package io.taesu.springdatamongodb.app.domain
+package io.taesu.springdatamongodb.app.extensions
 
 import io.taesu.springdatamongodb.app.exception.ResourceNotFoundException
 import org.bson.types.ObjectId

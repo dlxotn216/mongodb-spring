@@ -20,7 +20,7 @@ import java.util.*
 @Configuration
 class AuditingConfig {
     @Bean
-    fun myAuditorProvider(): AuditorAware<ObjectId> {
+    fun auditorAware(): AuditorAware<ObjectId> {
         return AuditorAware {
             val contextUser = ContextUser(ObjectId(), "Lee Tae Su")
             Optional.of(contextUser.id)

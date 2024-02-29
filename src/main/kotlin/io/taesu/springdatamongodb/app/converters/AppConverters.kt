@@ -4,6 +4,7 @@ import io.taesu.springdatamongodb.app.annotation.MongodbReadingConverter
 import io.taesu.springdatamongodb.app.annotation.MongodbWritingConverter
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
+import java.time.Instant
 import java.time.Year
 import kotlin.reflect.full.hasAnnotation
 
@@ -35,4 +36,14 @@ class YearReadConverter: Converter<Long, Year> {
 @MongodbWritingConverter
 class YearWriteConverter: Converter<Year, Long> {
     override fun convert(source: Year): Long = source.value.toLong()
+}
+
+@MongodbReadingConverter
+class InstantReadConverter: Converter<Long, Instant> {
+    override fun convert(source: Long): Instant = Instant.ofEpochMilli(source)
+}
+
+@MongodbWritingConverter
+class InstantWriteConverter: Converter<Instant, Long> {
+    override fun convert(source: Instant): Long = source.toEpochMilli()
 }
