@@ -1,8 +1,10 @@
 package io.taesu.springdatamongodb.app.domain
 
+import io.taesu.springdatamongodb.app.extensions.resolveZonedDateTime
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.*
 import org.springframework.data.domain.Persistable
+import org.springframework.data.mongodb.core.mapping.Field
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -15,8 +17,6 @@ import java.time.ZonedDateTime
  * @since spring-data-mongodb
  */
 abstract class Auditable(
-    @Id
-    val _id: ObjectId = ObjectId(),
     @CreatedDate
     var createdAtMillis: Instant? = null,
     @CreatedBy
@@ -27,13 +27,10 @@ abstract class Auditable(
     var modifiedBy: ObjectId? = null,
 ): Persistable<ObjectId> {
     override fun isNew() = createdAtMillis == null
-    override fun getId(): ObjectId = _id
 
     val createdAt: ZonedDateTime?
-        get() = resolveZonedDateTime(createdAtMillis)
+        get() = createdAtMillis.resolveZonedDateTime
     val modifiedAt: ZonedDateTime?
-        get() = resolveZonedDateTime(modifiedAtMillis)
+        get() = modifiedAtMillis.resolveZonedDateTime
 
-    private fun resolveZonedDateTime(instant: Instant?) =
-        instant?.let { ZonedDateTime.ofInstant(it, ZoneId.systemDefault()) }
 }
