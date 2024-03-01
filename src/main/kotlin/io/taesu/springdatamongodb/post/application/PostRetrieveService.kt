@@ -1,12 +1,14 @@
 package io.taesu.springdatamongodb.post.application
 
 import io.taesu.springdatamongodb.app.extensions.findById
+import io.taesu.springdatamongodb.app.extensions.findByIdNotNull
 import io.taesu.springdatamongodb.app.extensions.toResponse
 import io.taesu.springdatamongodb.post.domain.Post
 import io.taesu.springdatamongodb.post.domain.PostRepository
 import io.taesu.springdatamongodb.post.interfaces.HashTagDto
 import io.taesu.springdatamongodb.post.interfaces.MentionDto
 import io.taesu.springdatamongodb.post.interfaces.PostRetrieveResponse
+import org.bson.types.ObjectId
 import org.springframework.stereotype.Service
 
 /**
@@ -18,8 +20,8 @@ import org.springframework.stereotype.Service
  */
 @Service
 class PostRetrieveService(val postRepository: PostRepository) {
-    fun retrieve(id: String): PostRetrieveResponse {
-        return postRepository.findById(id).toResponse()
+    fun retrieve(id: ObjectId): PostRetrieveResponse {
+        return postRepository.findByIdNotNull(id).toResponse()
     }
 }
 

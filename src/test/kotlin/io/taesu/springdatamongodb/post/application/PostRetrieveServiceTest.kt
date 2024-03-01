@@ -39,7 +39,7 @@ class PostRetrieveServiceTest {
     fun `Post 조회 서비스 테스트`() {
         // given
         // when
-        val response = postRetrieveService.retrieve(post!!.id.toString())
+        val response = postRetrieveService.retrieve(post!!.id)
 
         // then
         response.run {

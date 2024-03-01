@@ -14,3 +14,4 @@ import org.springframework.data.repository.findByIdOrNull
  */
 fun <T> MongoRepository<T, ObjectId>.findByIdOrNull(id: String) = findByIdOrNull(ObjectId(id))
 fun <T> MongoRepository<T, ObjectId>.findById(id: String) = findByIdOrNull(id) ?: throw ResourceNotFoundException(id)
+fun <T> MongoRepository<T, ObjectId>.findByIdNotNull(id: ObjectId) = findByIdOrNull(id) ?: throw ResourceNotFoundException(id)
