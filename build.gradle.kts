@@ -32,6 +32,8 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:1.0.14")
+    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter-kotlin:1.0.14")
 }
 
 tasks.withType<KotlinCompile> {
