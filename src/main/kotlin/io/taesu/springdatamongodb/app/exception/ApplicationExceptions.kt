@@ -9,7 +9,8 @@ package io.taesu.springdatamongodb.app.exception
  */
 open class BusinessException(val errorCode: ErrorCode): RuntimeException()
 
-class ResourceNotFoundException(val identifier: String): BusinessException(ErrorCode.RESOURCE_NOT_FOUND)
+class ResourceNotFoundException(val identifier: Any)
+    : BusinessException(ErrorCode.RESOURCE_NOT_FOUND)
 
 class UnexpectedException: RuntimeException() {
     val errorCode: ErrorCode = ErrorCode.UNEXPECTED

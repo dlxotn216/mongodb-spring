@@ -46,3 +46,7 @@ class PostRetrieveResponse(
         val name: String,
     )
 }
+
+class PostCommentCreateHttpRequest(
+    val content: String,
+)
